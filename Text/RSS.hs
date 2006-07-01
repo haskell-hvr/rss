@@ -141,7 +141,7 @@ mkLink :: Link -> CFilter
 mkLink = mkSimple "link" . show 
 
 mkDescription :: Description -> CFilter
-mkDescription = mkSimple "description"
+mkDescription str = mkElem "description" [cdata str]
 
 mkDocs :: CFilter
 mkDocs = mkSimple "docs" "http://www.rssboard.org/rss-2-0-1-rv-6"
