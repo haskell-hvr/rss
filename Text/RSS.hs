@@ -111,7 +111,9 @@ data ItemElem = Title Title
 -- | Converts RSS to XML. 
 rssToXML :: RSS -> CFilter
 rssToXML (RSS title link description celems items) = 
-    mkElemAttr "rss" [("version",literal "2.0")]
+    mkElemAttr "rss" [("version",literal "2.0"),
+                      ("xmlns:content", 
+                       literal "http://purl.org/rss/1.0/modules/content/")]
                      [mkElem "channel" ([mkTitle title, 
                                          mkLink link,
 				         mkDescription description,
