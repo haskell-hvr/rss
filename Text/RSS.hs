@@ -102,7 +102,7 @@ data ItemElem = Title Title
 	      | Category (Maybe Domain) String
               | Comments URI
 	      | Enclosure URI Int MIME_Type
-	      | Guid String
+	      | Guid Bool String
 	      | PubDate CalendarTime
 	      | Source URI Title
 	      | ContentEncoded String
@@ -207,7 +207,8 @@ mkItemElem (Enclosure uri length mtype) =
                             ("length", literal (show length)),
 			    ("type", literal (mtype))] 
                            []
-mkItemElem (Guid s) = mkElem "guid" [ literal s ]
+mkItemElem (Guid perm s) = mkElemAttr "guid" attrs [ literal s ]
+    where attrs = if perm then [("isPermaLink", literal "true")] else []
 mkItemElem (PubDate ct) = mkElem "pubDate" [ literal (formatDate ct) ]
 mkItemElem (Source uri t) = mkElemAttr "source" [("url", literal (show uri))] [ literal t ]
 mkItemElem (ContentEncoded str) = mkElem "content:encoded" [ cdata str ]
