@@ -144,7 +144,7 @@ mkDescription :: Description -> CFilter
 mkDescription str = mkElem "description" [cdata str]
 
 mkDocs :: CFilter
-mkDocs = mkSimple "docs" "http://www.rssboard.org/rss-2-0-1-rv-6"
+mkDocs = mkSimple "docs" "http://www.rssboard.org/rss-specification"
 
 mkPubDate :: CalendarTime -> CFilter
 mkPubDate = mkSimple "pubDate" . formatDate
