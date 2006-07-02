@@ -29,6 +29,9 @@
 -- * Use HaXml.Verbatim instead of HaXml.Pretty, since 
 --   HaXml.Pretty seems to introduce spaces around entities.
 --
+-- * Removed the use of content:encoded, since the description
+--   tag is the recommented way to include HTML content in RSS 2.0.
+--
 -----------------------------------------------------------------------------
 module Text.RSS (RSS(..), Item, ChannelElem(..), ItemElem(..),
                  Title,Link,Description,Width,Height,
@@ -105,15 +108,12 @@ data ItemElem = Title Title
 	      | Guid Bool String
 	      | PubDate CalendarTime
 	      | Source URI Title
-	      | ContentEncoded String
 		deriving Show
 
 -- | Converts RSS to XML. 
 rssToXML :: RSS -> CFilter
 rssToXML (RSS title link description celems items) = 
-    mkElemAttr "rss" [("version",literal "2.0"),
-                      ("xmlns:content", 
-                       literal "http://purl.org/rss/1.0/modules/content/")]
+    mkElemAttr "rss" [("version",literal "2.0")]
                      [mkElem "channel" ([mkTitle title, 
                                          mkLink link,
 				         mkDescription description,
@@ -210,5 +210,5 @@ mkItemElem (Enclosure uri length mtype) =
 mkItemElem (Guid perm s) = mkElemAttr "guid" attrs [ literal s ]
     where attrs = if perm then [("isPermaLink", literal "true")] else []
 mkItemElem (PubDate ct) = mkElem "pubDate" [ literal (formatDate ct) ]
-mkItemElem (Source uri t) = mkElemAttr "source" [("url", literal (show uri))] [ literal t ]
-mkItemElem (ContentEncoded str) = mkElem "content:encoded" [ cdata str ]
+mkItemElem (Source uri t) = 
+    mkElemAttr "source" [("url", literal (show uri))] [ literal t ]
