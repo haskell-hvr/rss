@@ -8,7 +8,6 @@ License: PublicDomain
 build-depends: haskell98, base, network, HaXml<1.14
 Synopsis: A library for generating RSS 2.0 feeds.
 Description:
- This library generates [RSS 2.0 http://www.rssboard.org/rss-2-0-1-rv-6] 
- feeds.
+ This library allows you to generate RSS 2.0 feeds.
 Exposed-Modules: Text.RSS
 ghc-options: -O2 -W -fwarn-incomplete-patterns
