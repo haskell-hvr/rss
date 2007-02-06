@@ -3,7 +3,6 @@ Version: 2006.7.12
 Copyright: Jeremy Shaw 2004, Bjorn Bringert 2004-2006
 Maintainer: bjorn@bringert.net
 Author: Jeremy Shaw, Bjorn Bringert
-Homepage: http://www.cs.chalmers.se/~bringert/darcs/haskell-rss/doc/
 License: PublicDomain
 build-depends: base, network, HaXml<1.14
 Synopsis: A library for generating RSS 2.0 feeds.
