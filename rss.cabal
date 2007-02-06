@@ -5,7 +5,7 @@ Maintainer: bjorn@bringert.net
 Author: Jeremy Shaw, Bjorn Bringert
 Homepage: http://www.cs.chalmers.se/~bringert/darcs/haskell-rss/doc/
 License: PublicDomain
-build-depends: haskell98, base, network, HaXml<1.14
+build-depends: base, network, HaXml<1.14
 Synopsis: A library for generating RSS 2.0 feeds.
 Description:
  This library allows you to generate RSS 2.0 feeds.

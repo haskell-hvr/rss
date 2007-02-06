@@ -44,7 +44,7 @@ module Text.RSS (RSS(..), Item, ChannelElem(..), ItemElem(..),
 
 import Data.List
 
-import Maybe
+import Data.Maybe
 import Network.URI
 
 import System.Locale
