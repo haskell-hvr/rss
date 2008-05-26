@@ -13,7 +13,7 @@ Description:
 Flag split-base
 
 Library
-  build-depends: base, network, HaXml >=1.13 && <1.14
+  build-depends: base, network, HaXml >= 1.19.2
   if flag(split-base)
     Build-depends: base >= 3.0, old-time, old-locale
   else

@@ -111,7 +111,7 @@ data ItemElem = Title Title
 		deriving Show
 
 -- | Converts RSS to XML. 
-rssToXML :: RSS -> CFilter
+rssToXML :: RSS -> CFilter ()
 rssToXML (RSS title link description celems items) = 
     mkElemAttr "rss" [("version",literal "2.0")]
                      [mkElem "channel" ([mkTitle title, 
@@ -122,44 +122,44 @@ rssToXML (RSS title link description celems items) =
 				        ++ map mkItem items)]
 
 -- | Render XML as a string.
-showXML :: CFilter -> String
+showXML :: CFilter () -> String
 showXML = verbatim . cfilterToElem
 
-cfilterToElem :: CFilter -> Element
-cfilterToElem f = case f (CString False "") of
-                    [CElem e] -> xmlEscape stdXmlEscaper e
-                    []        -> error "RSS produced no output"
-                    _         -> error "RSS produced more than one output"
+cfilterToElem :: CFilter () -> Element ()
+cfilterToElem f = case f (CString False "" ()) of
+                    [CElem e _] -> xmlEscape stdXmlEscaper e
+                    []          -> error "RSS produced no output"
+                    _           -> error "RSS produced more than one output"
 
-mkSimple :: String -> String -> CFilter
+mkSimple :: String -> String -> CFilter ()
 mkSimple t str = mkElem t [literal str]
 
-mkTitle :: Title -> CFilter
+mkTitle :: Title -> CFilter ()
 mkTitle = mkSimple "title"
 
-mkLink :: Link -> CFilter
+mkLink :: Link -> CFilter ()
 mkLink = mkSimple "link" . show 
 
-mkDescription :: Description -> CFilter
+mkDescription :: Description -> CFilter ()
 mkDescription str = mkElem "description" [cdata str]
 
-mkDocs :: CFilter
+mkDocs :: CFilter ()
 mkDocs = mkSimple "docs" "http://www.rssboard.org/rss-specification"
 
-mkPubDate :: CalendarTime -> CFilter
+mkPubDate :: CalendarTime -> CFilter ()
 mkPubDate = mkSimple "pubDate" . formatDate
 
 formatDate :: CalendarTime -> String
 formatDate = formatCalendarTime defaultTimeLocale rfc822DateFormat
 
-mkCategory :: Maybe Domain -> String -> CFilter
+mkCategory :: Maybe Domain -> String -> CFilter ()
 mkCategory md s = mkElemAttr "category" attrs [literal s] 
     where attrs = maybe [] (\d -> [("domain", literal d)]) md
 
-maybeElem :: (a -> CFilter) -> Maybe a -> [CFilter]
+maybeElem :: (a -> CFilter ()) -> Maybe a -> [CFilter ()]
 maybeElem = maybe [] . ((:[]) .)
 
-mkChannelElem :: ChannelElem -> CFilter
+mkChannelElem :: ChannelElem -> CFilter ()
 mkChannelElem (Language str) = mkSimple "language" str
 mkChannelElem (Copyright str) = mkSimple "copyright" str
 mkChannelElem (ManagingEditor str) = mkSimple "managingEditor" str
@@ -192,10 +192,10 @@ protocolName :: CloudProtocol -> String
 protocolName CloudProtocolXmlRpc = "xml-rpc"
 protocolName CloudProtocolSOAP = "soap"
 
-mkItem :: Item -> CFilter
+mkItem :: Item -> CFilter ()
 mkItem itemElems = mkElem "item" (map mkItemElem itemElems)
 
-mkItemElem :: ItemElem -> CFilter
+mkItemElem :: ItemElem -> CFilter ()
 mkItemElem (Title t) = mkTitle t
 mkItemElem (Link l) = mkLink l
 mkItemElem (Description d) = mkDescription d
