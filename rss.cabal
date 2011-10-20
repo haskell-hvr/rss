@@ -1,6 +1,6 @@
 Name: rss
-Version: 3000.1.0
-Cabal-version: >=1.2
+Version: 3000.2.0
+Cabal-version: >=1.6
 Build-type: Simple
 Copyright: Jeremy Shaw 2004, Bjorn Bringert 2004-2006
 Maintainer: bjorn@bringert.net
@@ -10,13 +10,16 @@ Synopsis: A library for generating RSS 2.0 feeds.
 Description:
  This library allows you to generate RSS 2.0 feeds.
 
-Flag split-base
+source-repository head
+  Type:     darcs
+  Location: http://code.haskell.org/rss/
 
 Library
-  build-depends: base, network, HaXml >= 1.19.2 && < 1.20
-  if flag(split-base)
-    Build-depends: base >= 3.0, old-time, old-locale
-  else
-    Build-depends: base < 3.0
+  build-depends: base       >= 3      && < 5
+               , network    >= 2.0    && < 2.4
+               , HaXml      >= 1.19.2 && < 1.23
+               , time       >= 1.1.2  && < 1.5
+               , old-time   >= 1.0    && < 1.1
+               , old-locale >= 1.0    && < 1.1
   Exposed-Modules: Text.RSS
-  ghc-options: -W -fwarn-incomplete-patterns
+  ghc-options: -Wall

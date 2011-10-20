@@ -42,13 +42,14 @@ module Text.RSS (RSS(..), Item, ChannelElem(..), ItemElem(..),
                  rssToXML, showXML
                 ) where
 
-import Data.List
+import Network.URI (URI)
 
-import Data.Maybe
-import Network.URI
+import System.Locale (defaultTimeLocale, rfc822DateFormat)
 
-import System.Locale
-import System.Time
+import System.Time (Day)
+
+import Data.Time.Clock  (UTCTime)
+import Data.Time.Format (formatTime)
 
 import Text.XML.HaXml.Combinators (CFilter, mkElem, mkElemAttr, literal, cdata)
 import Text.XML.HaXml.Escape      (xmlEscape, stdXmlEscaper)
@@ -84,8 +85,8 @@ data ChannelElem = Language String
                  | Copyright String
                  | ManagingEditor Email
                  | WebMaster Email
-                 | ChannelPubDate CalendarTime
-                 | LastBuildDate CalendarTime
+                 | ChannelPubDate UTCTime
+                 | LastBuildDate UTCTime
                  | ChannelCategory (Maybe Domain) String
                  | Generator String
                  -- no docs tag, we generate that automatically
@@ -106,7 +107,7 @@ data ItemElem = Title Title
               | Comments URI
 	      | Enclosure URI Int MIME_Type
 	      | Guid Bool String
-	      | PubDate CalendarTime
+	      | PubDate UTCTime
 	      | Source URI Title
 		deriving Show
 
@@ -146,11 +147,11 @@ mkDescription str = mkElem "description" [cdata str]
 mkDocs :: CFilter ()
 mkDocs = mkSimple "docs" "http://www.rssboard.org/rss-specification"
 
-mkPubDate :: CalendarTime -> CFilter ()
+mkPubDate :: UTCTime -> CFilter ()
 mkPubDate = mkSimple "pubDate" . formatDate
 
-formatDate :: CalendarTime -> String
-formatDate = formatCalendarTime defaultTimeLocale rfc822DateFormat
+formatDate :: UTCTime -> String
+formatDate = formatTime defaultTimeLocale rfc822DateFormat
 
 mkCategory :: Maybe Domain -> String -> CFilter ()
 mkCategory md s = mkElemAttr "category" attrs [literal s] 
@@ -174,7 +175,7 @@ mkChannelElem (Cloud host port path proc proto)
                                     ("path", literal path),
                                     ("registerProcedure", literal proc),
                                     ("protocol", literal (protocolName proto))] []
-mkChannelElem (TTL min) = mkSimple "ttl" $ show min
+mkChannelElem (TTL minutes) = mkSimple "ttl" $ show minutes
 mkChannelElem (Image uri title link mw mh mdesc)
               = mkElem "image" ([mkElem "url" [literal (show uri)],
                                 mkTitle title, mkLink link] 
