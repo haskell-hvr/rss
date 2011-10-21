@@ -3,16 +3,18 @@ Version: 3000.2.0
 Cabal-version: >=1.6
 Build-type: Simple
 Copyright: Jeremy Shaw 2004, Bjorn Bringert 2004-2006
-Maintainer: bjorn@bringert.net
+Maintainer: Bas van Dijk <v.dijk.bas@gmail.com>
 Author: Jeremy Shaw, Bjorn Bringert
 License: PublicDomain
+Homepage:    https://github.com/basvandijk/rss
+Bug-reports: https://github.com/basvandijk/rss/issues
 Synopsis: A library for generating RSS 2.0 feeds.
 Description:
  This library allows you to generate RSS 2.0 feeds.
 
 source-repository head
-  Type:     darcs
-  Location: http://code.haskell.org/rss/
+  Type:     git
+  Location: git://github.com/basvandijk/rss.git
 
 Library
   build-depends: base       >= 3      && < 5
