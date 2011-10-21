@@ -3,7 +3,7 @@
 -- Module      :  Text.RSS
 -- Copyright   :  Copyright 2004, Jeremy Shaw, http://www.n-heptane.com/
 --                Copyright 2004-2006, Bjorn Bringert (bjorn@bringert.net)
--- License     :  This code is released to the public domain and comes 
+-- License     :  This code is released to the public domain and comes
 --                with no warranty.
 --
 -- Maintainer  :  Bjorn Bringert <bjorn@bringert.net>
@@ -23,10 +23,10 @@
 --
 -- * Use RFC 2822 format for dates.
 --
--- * Added all elements from RSS 2.0.1-rv-6, 
+-- * Added all elements from RSS 2.0.1-rv-6,
 --   <http://www.rssboard.org/rss-2-0-1-rv-6>
 --
--- * Use HaXml.Verbatim instead of HaXml.Pretty, since 
+-- * Use HaXml.Verbatim instead of HaXml.Pretty, since
 --   HaXml.Pretty seems to introduce spaces around entities.
 --
 -- * Removed the use of content:encoded, since the description
@@ -36,8 +36,8 @@
 module Text.RSS (RSS(..), Item, ChannelElem(..), ItemElem(..),
                  Title,Link,Description,Width,Height,
                  Email,Domain,MIME_Type,InputName,
-                 Hour, Minutes, 
-                 CloudHost, CloudPort, CloudPath, 
+                 Hour, Minutes,
+                 CloudHost, CloudPort, CloudPath,
                  CloudProcedure, CloudProtocol(..),
                  rssToXML, showXML
                 ) where
@@ -111,11 +111,11 @@ data ItemElem = Title Title
 	      | Source URI Title
 		deriving Show
 
--- | Converts RSS to XML. 
+-- | Converts RSS to XML.
 rssToXML :: RSS -> CFilter ()
-rssToXML (RSS title link description celems items) = 
+rssToXML (RSS title link description celems items) =
     mkElemAttr "rss" [("version",literal "2.0")]
-                     [mkElem "channel" ([mkTitle title, 
+                     [mkElem "channel" ([mkTitle title,
                                          mkLink link,
 				         mkDescription description,
                                          mkDocs]
@@ -139,7 +139,7 @@ mkTitle :: Title -> CFilter ()
 mkTitle = mkSimple "title"
 
 mkLink :: Link -> CFilter ()
-mkLink = mkSimple "link" . show 
+mkLink = mkSimple "link" . show
 
 mkDescription :: Description -> CFilter ()
 mkDescription str = mkElem "description" [cdata str]
@@ -154,7 +154,7 @@ formatDate :: UTCTime -> String
 formatDate = formatTime defaultTimeLocale rfc822DateFormat
 
 mkCategory :: Maybe Domain -> String -> CFilter ()
-mkCategory md s = mkElemAttr "category" attrs [literal s] 
+mkCategory md s = mkElemAttr "category" attrs [literal s]
     where attrs = maybe [] (\d -> [("domain", literal d)]) md
 
 maybeElem :: (a -> CFilter ()) -> Maybe a -> [CFilter ()]
@@ -178,7 +178,7 @@ mkChannelElem (Cloud host port path proc proto)
 mkChannelElem (TTL minutes) = mkSimple "ttl" $ show minutes
 mkChannelElem (Image uri title link mw mh mdesc)
               = mkElem "image" ([mkElem "url" [literal (show uri)],
-                                mkTitle title, mkLink link] 
+                                mkTitle title, mkLink link]
                                 ++ maybeElem (mkSimple "width" . show) mw
                                 ++ maybeElem (mkSimple "height" . show) mh
                                 ++ maybeElem mkDescription mdesc)
@@ -203,13 +203,13 @@ mkItemElem (Description d) = mkDescription d
 mkItemElem (Author e) = mkElem "author" [literal e]
 mkItemElem (Category md str) = mkCategory md str
 mkItemElem (Comments uri) = mkSimple "comments" $ show uri
-mkItemElem (Enclosure uri length mtype) = 
+mkItemElem (Enclosure uri len mtype) =
     mkElemAttr "enclosure" [("url", literal (show uri)),
-                            ("length", literal (show length)),
-			    ("type", literal (mtype))] 
+                            ("length", literal (show len)),
+			    ("type", literal (mtype))]
                            []
 mkItemElem (Guid perm s) = mkElemAttr "guid" attrs [ literal s ]
     where attrs = if perm then [("isPermaLink", literal "true")] else []
 mkItemElem (PubDate ct) = mkElem "pubDate" [ literal (formatDate ct) ]
-mkItemElem (Source uri t) = 
+mkItemElem (Source uri t) =
     mkElemAttr "source" [("url", literal (show uri))] [ literal t ]
