@@ -6,7 +6,7 @@
 -- License     :  This code is released to the public domain and comes
 --                with no warranty.
 --
--- Maintainer  :  Bjorn Bringert <bjorn@bringert.net>
+-- Maintainer  :  Bas van Dijk <v.dijk.bas@gmail.com>
 -- Stability   :  experimental
 -- Portability :  portable
 --
@@ -31,6 +31,10 @@
 --
 -- * Removed the use of content:encoded, since the description
 --   tag is the recommented way to include HTML content in RSS 2.0.
+--
+-- Changes by Bas van Dijk:
+--
+-- * Use @UTCTime@ (from @time@) instead of @CalendarTime@ (from @old-time@)
 --
 -----------------------------------------------------------------------------
 module Text.RSS (RSS(..), Item, ChannelElem(..), ItemElem(..),
