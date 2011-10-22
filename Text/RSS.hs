@@ -34,23 +34,25 @@
 --
 -- Changes by Bas van Dijk:
 --
--- * Use @UTCTime@ (from @time@) instead of @CalendarTime@ (from @old-time@)
+-- * Use @UTCTime@ from @time@ instead of @CalendarTime@ from @old-time@.
+--
+-- * Add our own @Weekday@ type instead of using the @Day@ type from @old-time@.
 --
 -----------------------------------------------------------------------------
 module Text.RSS (RSS(..), Item, ChannelElem(..), ItemElem(..),
                  Title,Link,Description,Width,Height,
                  Email,Domain,MIME_Type,InputName,
-                 Hour, Minutes,
+                 Weekday(..), Hour, Minutes,
                  CloudHost, CloudPort, CloudPath,
                  CloudProcedure, CloudProtocol(..),
                  rssToXML, showXML
                 ) where
 
+import Data.Ix (Ix)
+
 import Network.URI (URI)
 
 import System.Locale (defaultTimeLocale, rfc822DateFormat)
-
-import System.Time (Day)
 
 import Data.Time.Clock  (UTCTime)
 import Data.Time.Format (formatTime)
@@ -100,7 +102,7 @@ data ChannelElem = Language String
                  | Rating String
                  | TextInput Title Description InputName Link
                  | SkipHours [Hour]
-                 | SkipDays [Day]
+                 | SkipDays [Weekday]
 		   deriving Show
 
 data ItemElem = Title Title
@@ -113,7 +115,12 @@ data ItemElem = Title Title
 	      | Guid Bool String
 	      | PubDate UTCTime
 	      | Source URI Title
-		deriving Show
+		deriving (Show)
+
+-- | A day of the week.
+data Weekday = Sunday   | Monday | Tuesday | Wednesday
+             | Thursday | Friday | Saturday
+               deriving (Eq, Ord, Enum, Bounded, Ix, Read, Show)
 
 -- | Converts RSS to XML.
 rssToXML :: RSS -> CFilter ()

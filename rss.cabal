@@ -21,7 +21,6 @@ Library
                , network    >= 2.0    && < 2.4
                , HaXml      >= 1.19.2 && < 1.23
                , time       >= 1.1.2  && < 1.5
-               , old-time   >= 1.0    && < 1.1
                , old-locale >= 1.0    && < 1.1
   Exposed-Modules: Text.RSS
   ghc-options: -Wall
