@@ -77,6 +77,7 @@ type Item = [ItemElem]
 type Title = String
 type Link = URI
 type Description = String
+type ContentEncoded = String
 type Width = Int
 type Height = Int
 type Email = String
@@ -114,6 +115,7 @@ data ChannelElem = Language String
 data ItemElem = Title Title
 	      | Link Link
 	      | Description Description
+              | ContentEncoded String
 	      | Author Email
 	      | Category (Maybe Domain) String
               | Comments URI
@@ -128,16 +130,26 @@ data Weekday = Sunday   | Monday | Tuesday | Wednesday
              | Thursday | Friday | Saturday
                deriving (Eq, Ord, Enum, Bounded, Ix, Read, Show)
 
+-- | Namespace declaration for the modules:content
+xmlnsContentURL :: String
+xmlnsContentURL = "http://purl.org/rss/1.0/modules/content/"
+
 -- | Converts RSS to XML.
 rssToXML :: RSS -> CFilter ()
 rssToXML (RSS title link description celems items) =
-    mkElemAttr "rss" [("version",literal "2.0")]
+    mkElemAttr "rss" ([("version",literal "2.0")] ++ xmlnsContent)
                      [mkElem "channel" ([mkTitle title,
                                          mkLink link,
 				         mkDescription description,
                                          mkDocs]
                                         ++ map mkChannelElem celems
 				        ++ map mkItem items)]
+    where haveContentEncoded = or $ map (any isContentEncoded) items
+          isContentEncoded  (ContentEncoded _) = True
+          isContentEncoded  _ = False
+          xmlnsContent = if haveContentEncoded
+                           then [("xmlns:content", literal xmlnsContentURL)]
+                           else []
 
 -- | Render XML as a string.
 showXML :: CFilter () -> String
@@ -160,6 +172,9 @@ mkLink = mkSimple "link" . show
 
 mkDescription :: Description -> CFilter ()
 mkDescription str = mkElem "description" [cdata str]
+
+mkContentEncoded :: ContentEncoded -> CFilter ()
+mkContentEncoded str = mkElem "content:encoded" [cdata str]
 
 mkDocs :: CFilter ()
 mkDocs = mkSimple "docs" "http://www.rssboard.org/rss-specification"
@@ -217,6 +232,7 @@ mkItemElem :: ItemElem -> CFilter ()
 mkItemElem (Title t) = mkTitle t
 mkItemElem (Link l) = mkLink l
 mkItemElem (Description d) = mkDescription d
+mkItemElem (ContentEncoded c) = mkContentEncoded c
 mkItemElem (Author e) = mkElem "author" [literal e]
 mkItemElem (Category md str) = mkCategory md str
 mkItemElem (Comments uri) = mkSimple "comments" $ show uri
