@@ -1,5 +1,5 @@
 Name: rss
-Version: 3000.2.0.2
+Version: 3000.3.0.0
 Cabal-version: >=1.6
 Build-type: Simple
 Copyright: Jeremy Shaw 2004, Bjorn Bringert 2004-2006
@@ -21,7 +21,7 @@ source-repository head
 Library
   build-depends: base       >= 3      && < 5
                , network    >= 2.0    && < 2.5
-               , HaXml      >= 1.19.2 && < 1.24
+               , HaXml      >= 1.24
                , time       >= 1.1.2  && < 1.5
                , old-locale >= 1.0    && < 1.1
   Exposed-Modules: Text.RSS
