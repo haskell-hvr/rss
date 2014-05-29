@@ -70,7 +70,7 @@ import Text.XML.HaXml.Verbatim    (verbatim)
 
 
 data RSS = RSS Title Link Description [ChannelElem] [Item]
-	 deriving Show
+         deriving Show
 
 type Item = [ItemElem]
 
@@ -109,19 +109,19 @@ data ChannelElem = Language String
                  | TextInput Title Description InputName Link
                  | SkipHours [Hour]
                  | SkipDays [Weekday]
-		   deriving Show
+                   deriving Show
 
 data ItemElem = Title Title
-	      | Link Link
-	      | Description Description
-	      | Author Email
-	      | Category (Maybe Domain) String
+              | Link Link
+              | Description Description
+              | Author Email
+              | Category (Maybe Domain) String
               | Comments URI
-	      | Enclosure URI Int MIME_Type
-	      | Guid Bool String
-	      | PubDate UTCTime
-	      | Source URI Title
-		deriving (Show)
+              | Enclosure URI Int MIME_Type
+              | Guid Bool String
+              | PubDate UTCTime
+              | Source URI Title
+                deriving (Show)
 
 -- | A day of the week.
 data Weekday = Sunday   | Monday | Tuesday | Wednesday
@@ -134,10 +134,10 @@ rssToXML (RSS title link description celems items) =
     mkElemAttr "rss" [("version",literal "2.0")]
                      [mkElem "channel" ([mkTitle title,
                                          mkLink link,
-				         mkDescription description,
+                                         mkDescription description,
                                          mkDocs]
                                         ++ map mkChannelElem celems
-				        ++ map mkItem items)]
+                                        ++ map mkItem items)]
 
 -- | Render XML as a string.
 showXML :: CFilter () -> String
@@ -223,7 +223,7 @@ mkItemElem (Comments uri) = mkSimple "comments" $ show uri
 mkItemElem (Enclosure uri len mtype) =
     mkElemAttr "enclosure" [("url", literal (show uri)),
                             ("length", literal (show len)),
-			    ("type", literal (mtype))]
+                            ("type", literal (mtype))]
                            []
 mkItemElem (Guid perm s) = mkElemAttr "guid" attrs [ literal s ]
     where attrs = if perm then [("isPermaLink", literal "true")] else []
