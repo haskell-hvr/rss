@@ -58,7 +58,11 @@ import Data.Ix (Ix)
 
 import Network.URI (URI)
 
+#if MIN_VERSION_time(1,5,0)
+import Data.Time.Format(defaultTimeLocale, rfc822DateFormat)
+#else
 import System.Locale (defaultTimeLocale, rfc822DateFormat)
+#endif
 
 import Data.Time.Clock  (UTCTime)
 import Data.Time.Format (formatTime)
