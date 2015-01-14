@@ -24,9 +24,12 @@ flag old-locale
                If true then depend on time < 1.5 together with old-locale.
   default: False
 
+flag network-uri
+   description: Get Network.URI from the network-uri package
+   default: True
+
 Library
   build-depends: base       >= 3      && < 5
-               , network    >= 2.0    && < 2.6
                , HaXml      >= 1.24
                , time       >= 1.1.2  && < 1.5
                , old-locale >= 1.0    && < 1.1
@@ -36,6 +39,13 @@ Library
                  , old-locale >= 1.0   && < 1.1
   else
     build-depends: time >= 1.5 && < 1.6
+
+  if flag(network-uri)
+    build-depends: network-uri >= 2.6 && < 2.7
+                 , network     >= 2.6 && < 2.7
+  else
+    build-depends: network-uri >= 2.5 && < 2.6
+                 , network     >= 2.0 && < 2.6
 
   Exposed-Modules: Text.RSS
   ghc-options: -Wall
