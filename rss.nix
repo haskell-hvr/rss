@@ -1,14 +1,14 @@
-{ cabal, HaXml, network, networkUri, time }:
-
-cabal.mkDerivation (self: {
+{ mkDerivation, base, HaXml, network, network-uri, old-locale
+, stdenv, time
+}:
+mkDerivation {
   pname = "rss";
   version = "HEAD";
   src = ./.;
-  buildDepends = [ HaXml network networkUri time ];
-  meta = {
-    homepage = "https://github.com/basvandijk/rss";
-    description = "A library for generating RSS 2.0 feeds.";
-    license = self.stdenv.lib.licenses.publicDomain;
-    platforms = self.ghc.meta.platforms;
-  };
-})
+  libraryHaskellDepends = [
+    base HaXml network network-uri old-locale time
+  ];
+  homepage = "https://github.com/basvandijk/rss";
+  description = "A library for generating RSS 2.0 feeds.";
+  license = stdenv.lib.licenses.publicDomain;
+}
