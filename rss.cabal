@@ -11,6 +11,7 @@ Bug-reports: https://github.com/basvandijk/rss/issues
 Synopsis: A library for generating RSS 2.0 feeds.
 Description:
  This library allows you to generate RSS 2.0 feeds.
+Tested-With: GHC==8.6.1, GHC==8.4.3, GHC==8.2.2, GHC==8.0.2, GHC==7.10.3, GHC==7.8.4, GHC==7.6.3, GHC==7.4.2, GHC==7.2.2, GHC==7.0.4
 
 extra-source-files: README.markdown
 
