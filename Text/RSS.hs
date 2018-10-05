@@ -54,23 +54,26 @@ module Text.RSS (RSS(..), Item, ChannelElem(..), ItemElem(..),
                  rssToXML, showXML
                 ) where
 
-import Data.Ix (Ix)
+import           Data.Ix                    (Ix)
 
-import Network.URI (URI)
+import           Network.URI                (URI)
 
 #if MIN_VERSION_time(1,5,0)
-import Data.Time.Format(defaultTimeLocale, rfc822DateFormat)
+import           Data.Time.Format           (defaultTimeLocale,
+                                             rfc822DateFormat)
 #else
-import System.Locale (defaultTimeLocale, rfc822DateFormat)
+import           System.Locale              (defaultTimeLocale,
+                                             rfc822DateFormat)
 #endif
 
-import Data.Time.Clock  (UTCTime)
-import Data.Time.Format (formatTime)
+import           Data.Time.Clock            (UTCTime)
+import           Data.Time.Format           (formatTime)
 
-import Text.XML.HaXml.Combinators (CFilter, mkElem, mkElemAttr, literal, cdata)
-import Text.XML.HaXml.Escape      (xmlEscape, stdXmlEscaper)
-import Text.XML.HaXml.Types       (Element,Content(..))
-import Text.XML.HaXml.Verbatim    (verbatim)
+import           Text.XML.HaXml.Combinators (CFilter, cdata, literal, mkElem,
+                                             mkElemAttr)
+import           Text.XML.HaXml.Escape      (stdXmlEscaper, xmlEscape)
+import           Text.XML.HaXml.Types       (Content (..), Element)
+import           Text.XML.HaXml.Verbatim    (verbatim)
 
 
 data RSS = RSS Title Link Description [ChannelElem] [Item]
@@ -212,7 +215,7 @@ mkChannelElem (SkipDays ds) = mkElem "skipDays" (map (mkSimple "day" . show) ds)
 
 protocolName :: CloudProtocol -> String
 protocolName CloudProtocolXmlRpc = "xml-rpc"
-protocolName CloudProtocolSOAP = "soap"
+protocolName CloudProtocolSOAP   = "soap"
 
 mkItem :: Item -> CFilter ()
 mkItem itemElems = mkElem "item" (map mkItemElem itemElems)
