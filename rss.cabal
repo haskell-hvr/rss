@@ -1,6 +1,6 @@
 cabal-version: 1.12
 name: rss
-version: 3000.2.0.6
+version: 3000.2.0.7
 
 build-type:  Simple
 copyright:   Jeremy Shaw 2004, Bjorn Bringert 2004-2006
@@ -36,7 +36,7 @@ library
   if impl(ghc >= 7.2)
     default-extensions: Trustworthy
 
-  build-depends: base       >= 4.3    && < 5
+  build-depends: base       >= 4.3    && < 4.13
                , HaXml      >= 1.24   && < 1.26
 
   if flag(old-locale)
