@@ -1,4 +1,5 @@
-cabal-version: 1.12
+cabal-version: 1.18
+  -- Version 1.18 needed for extra-doc-files
 name: rss
 version: 3000.2.0.8
 
@@ -13,9 +14,15 @@ synopsis:    A library for generating RSS 2.0 feeds.
 category:    RSS
 description: This library allows you to generate [RSS 2.0](http://www.rssboard.org/rss-specification) feeds.
 
+extra-doc-files:
+  README.md
+  CHANGELOG.md
+
 tested-with:
-  GHC == 9.6.2
-  GHC == 9.4.5
+  GHC == 9.10.0
+  GHC == 9.8.2
+  GHC == 9.6.4
+  GHC == 9.4.8
   GHC == 9.2.8
   GHC == 9.0.2
   GHC == 8.10.7
@@ -24,42 +31,23 @@ tested-with:
   GHC == 8.4.4
   GHC == 8.2.2
   GHC == 8.0.2
-  GHC == 7.10.3
-  GHC == 7.8.4
-  GHC == 7.6.3
-  GHC == 7.4.2
-  GHC == 7.2.2
-  GHC == 7.0.4
 
 source-repository head
   type:     git
   location: https://github.com/haskell-hvr/rss.git
 
-flag old-locale
-  description: If false then depend on @time >= 1.5@.
-               .
-               If true then depend on @time < 1.5@ together with @old-locale@.
-  default: False
-
 library
   exposed-modules: Text.RSS
 
   default-language: Haskell2010
-  other-extensions: CPP
-  if impl(ghc >= 7.2)
-    default-extensions: Trustworthy
+  default-extensions: Trustworthy
 
-  build-depends: base        >= 4.3    && < 5
+  build-depends: base        >= 4.9    && < 5
                , HaXml       >= 1.24   && < 1.26
                , network-uri >= 2.6    && < 2.7
-
-  if flag(old-locale)
-    build-depends: time       >= 1.2   && < 1.5
-                 , old-locale >= 1.0   && < 1.1
-  else
-    build-depends: time       >= 1.5   && < 1.13
+               , time        >= 1.5    && < 1.14
 
 
-  ghc-options: -Wall
-  if impl(ghc >= 7.10)
-    ghc-options: -fno-warn-trustworthy-safe
+  ghc-options:
+    -Wall
+    -Wno-trustworthy-safe

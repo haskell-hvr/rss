@@ -1,5 +1,3 @@
-{-# LANGUAGE CPP #-}
-
 -----------------------------------------------------------------------------
 -- |
 -- Module      :  Text.RSS
@@ -8,8 +6,8 @@
 -- License     :  This code is released to the public domain and comes
 --                with no warranty.
 --
--- Maintainer  :  Bas van Dijk <v.dijk.bas@gmail.com>
--- Stability   :  experimental
+-- Maintainer  :  Andreas Abel
+-- Stability   :  stable
 -- Portability :  portable
 --
 -- A libary for generating RSS 2.0 feeds.
@@ -54,14 +52,8 @@ import           Data.Ix                    (Ix)
 
 import           Network.URI                (URI)
 
-#if MIN_VERSION_time(1,5,0)
 import           Data.Time.Format           (defaultTimeLocale,
                                              rfc822DateFormat)
-#else
-import           System.Locale              (defaultTimeLocale,
-                                             rfc822DateFormat)
-#endif
-
 import           Data.Time.Clock            (UTCTime)
 import           Data.Time.Format           (formatTime)
 
